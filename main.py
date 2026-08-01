@@ -90,7 +90,7 @@ def broadcast_message(message):
     success_count = 0
     for u_id in db["users"]:
         try:
-            bot.send_message(u_id, f"📢 **رسالة من الإدارة:**\n\n{text}", parse_mode="Markdown")
+            bot.send_message(u_id, f"📢 ** رسالة من اوبنتو:**\n\n{text}", parse_mode="Markdown")
             success_count += 1
         except Exception:
             pass # يتجاهل اللي حاظرين البوت
