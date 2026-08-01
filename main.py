@@ -97,30 +97,25 @@ def broadcast_message(message):
             
     bot.reply_to(message, f"✅ **تم إرسال الإذاعة بنجاح إلى {success_count} شخص.**", parse_mode="Markdown")
 
+
 # --- 6. استلام الردود من الأدمن (الرد على المستخدمين) ---
+@bot.message_handler(func=lambda m: m.chat.id == ADMIN_ID and m.reply_to_message, content_types=['text', 'photo', 'video', 'document', 'voice', 'audio', 'sticker'])
+def handle_admin_reply(message):
+    original_msg_id = str(message.reply_to_message.message_id)
+    
+    # فحص إذا الرسالة موجودة بالخريطة مال البوت
+    if original_msg_id in db["msg_map"]:
+        target_user_id = db["msg_map"][original_msg_id]
+        try:
+            # ينسخ رد الأدمن (سواء جان نص، صورة، بصمة، ملف) ويدزه للمستخدم
+            bot.copy_message(target_user_id, ADMIN_ID, message.message_id)
+            bot.reply_to(message, "✅ **تم إرسال ردك للمستخدم بنجاح.**", parse_mode="Markdown")
+        except Exception as e:
+            bot.reply_to(message, f"❌ **فشل الإرسال!**\nيجوز الشخص حظر البوت أو مسح المحادثة.\n\nالسبب التقني: {e}")
+    else:
+        bot.reply_to(message, "⚠️ **عذراً!** ما كدرت أتعرف على صاحب هاي الرسالة. (تأكد إنك دتسوي رد على رسائل جديدة مو قديمة).")
 
-@bot.message_handler(func=lambda m: m.chat.id != ADMIN_ID, content_types=['text', 'photo', 'video', 'document', 'voice', 'audio', 'sticker'])
-def handle_user_message(message):
-    user_id = message.from_user.id
-    username = f"@{message.from_user.username}" if message.from_user.username else message.from_user.first_name
 
-    try:
-        # 1. رسالة تعريفية للأدمن حتى يعرف منو دزها
-        info_msg = bot.send_message(ADMIN_ID, f"📩 رسالة جديدة من: {username}\nآيدي: {user_id}")
-        
-        # 2. نسخ الرسالة الفعلية (المحتوى) للأدمن
-        copied_msg = bot.copy_message(ADMIN_ID, message.chat.id, message.message_id)
-        
-        # 3. خزن معرف الرسالة المنسوخة حتى الأدمن يكدر يرد عليها
-        db["msg_map"][str(copied_msg.message_id)] = user_id
-        save_data(db)
-        
-        # 4. تأكيد الاستلام للمستخدم
-        bot.reply_to(message, "✅ وصلت رسالتك!\nانتظر الرد قريباً...")
-    except Exception as e:
-        bot.reply_to(message, "❌ صار خلل فني وما كدرت أوصل رسالتك، جرب بعدين.")
-
-# --- 7. استلام الرسائل من المستخدمين (تحويلها للأدمن) ---
 # --- 7. استلام الرسائل من المستخدمين (تحويلها للأدمن) ---
 @bot.message_handler(func=lambda m: m.chat.id != ADMIN_ID, content_types=['text', 'photo', 'video', 'document', 'voice', 'audio', 'sticker'])
 def handle_user_message(message):
