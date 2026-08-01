@@ -1,4 +1,4 @@
-Import telebot
+import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 import os
 import json
