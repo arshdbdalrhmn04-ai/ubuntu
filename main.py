@@ -122,7 +122,7 @@ def handle_user_message(message):
 
     try:
         # 1. رسالة تعريفية للأدمن حتى يعرف منو دزها
-       Info_msg = bot.send_message(ADMIN_ID, f"📩 رسالة جديدة من: {username}\nآيدي: {user_id}")
+        Info_msg = bot.send_message(ADMIN_ID, f"📩 رسالة جديدة من: {username}\nآيدي: {user_id}")
         # 2. نسخ الرسالة الفعلية (المحتوى) للأدمن
         copied_msg = bot.copy_message(ADMIN_ID, message.chat.id, message.message_id)
         
@@ -132,7 +132,7 @@ def handle_user_message(message):
         
         # 4. تأكيد الاستلام للمستخدم
         bot.reply_to(message, "✅ **وصلت رسالتك!**\nانتظر الرد قريباً...", parse_mode="Markdown")
-    except Exception as e:
+        except Exception as e:
         bot.reply_to(message, "❌ صار خلل فني وما كدرت أوصل رسالتك، جرب بعدين.")
 
 # --- 8. تشغيل البوت ---
