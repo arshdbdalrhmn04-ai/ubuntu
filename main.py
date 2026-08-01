@@ -115,6 +115,7 @@ def handle_admin_reply(message):
         bot.reply_to(message, "⚠️ عذراً، ما كدرت أتعرف على صاحب هاي الرسالة (يجوز قديمة أو ما محفوظة بالبيانات).")
 
 # --- 7. استلام الرسائل من المستخدمين (تحويلها للأدمن) ---
+# --- 7. استلام الرسائل من المستخدمين (تحويلها للأدمن) ---
 @bot.message_handler(func=lambda m: m.chat.id != ADMIN_ID, content_types=['text', 'photo', 'video', 'document', 'voice', 'audio', 'sticker'])
 def handle_user_message(message):
     user_id = message.from_user.id
@@ -122,7 +123,8 @@ def handle_user_message(message):
 
     try:
         # 1. رسالة تعريفية للأدمن حتى يعرف منو دزها
-        Info_msg = bot.send_message(ADMIN_ID, f"📩 رسالة جديدة من: {username}\nآيدي: {user_id}")
+        info_msg = bot.send_message(ADMIN_ID, f"📩 رسالة جديدة من: {username}\nآيدي: {user_id}")
+        
         # 2. نسخ الرسالة الفعلية (المحتوى) للأدمن
         copied_msg = bot.copy_message(ADMIN_ID, message.chat.id, message.message_id)
         
@@ -131,8 +133,8 @@ def handle_user_message(message):
         save_data(db)
         
         # 4. تأكيد الاستلام للمستخدم
-        bot.reply_to(message, "✅ **وصلت رسالتك!**\nانتظر الرد قريباً...", parse_mode="Markdown")
-        except Exception as e:
+        bot.reply_to(message, "✅ وصلت رسالتك!\nانتظر الرد قريباً...")
+    except Exception as e:
         bot.reply_to(message, "❌ صار خلل فني وما كدرت أوصل رسالتك، جرب بعدين.")
 
 # --- 8. تشغيل البوت ---
