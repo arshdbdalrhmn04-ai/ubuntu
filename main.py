@@ -56,7 +56,7 @@ def send_welcome(message):
 
     # إذا الأدمن داس ستارت
     if user_id == ADMIN_ID:
-        bot.reply_to(message, f"👑 **أهلاً بيك سيدي المطور!**\n\n"
+        bot.reply_to(message, f"👑 **أهلاً بيك ارشد المطور!**\n\n"
                               f"أنت الأدمن، أي رسالة توصلني راح أدزها إلك هنا.\n"
                               f"💡 **طريقة الرد:** بس سوي (Reply) للرسالة اللي توصلك وأني أوصلها للشخص.\n\n"
                               f"📊 **إحصائيات البوت:**\n"
@@ -122,8 +122,7 @@ def handle_user_message(message):
 
     try:
         # 1. رسالة تعريفية للأدمن حتى يعرف منو دزها
-        info_msg = bot.send_message(ADMIN_ID, f"📩 **رسالة جديدة من:** {username}\nآيدي: `{user_id}`", parse_mode="Markdown")
-        
+       Info_msg = bot.send_message(ADMIN_ID, f"📩 رسالة جديدة من: {username}\nآيدي: {user_id}")
         # 2. نسخ الرسالة الفعلية (المحتوى) للأدمن
         copied_msg = bot.copy_message(ADMIN_ID, message.chat.id, message.message_id)
         
